@@ -2,8 +2,10 @@
 
 var React = require('react');
 
+var Feed = require('./components/Feed');
+
 var testComponent = React.render(
-  <h2>Real-Time with React</h2>,
-  document.getElementById('test')
+  <Feed />,
+  document.getElementById('app')
 );
 
