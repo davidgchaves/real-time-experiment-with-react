@@ -14,17 +14,24 @@ var Feed = React.createClass({
       { key:'2', title: "Kurosawa's Rashomon", description: 'A heinous crime and its aftermath are recalled from differing points of view.', votes: 1950 },
       { key:'3', title: "Ozu's Bashun", description: 'Setsuko Hara and Jun Usami ride bicycles to the beach... and the vase, of course.', votes: 1949 },
     ];
-    return { items: FEED_ITEMS };
+    return {
+      items: FEED_ITEMS,
+      formDisplayed: false
+    };
+  },
+
+  onToggleForm: function() {
+    this.setState({ formDisplayed: !this.state.formDisplayed });
   },
 
   render: function() {
     return (
       <div>
         <div className="container">
-          <ShowAddButton />
+          <ShowAddButton displayed={this.state.formDisplayed} onToggleForm={this.onToggleForm} />
         </div>
 
-        <FeedForm />
+        <FeedForm displayed={this.state.formDisplayed} />
 
         <br />
         <br />
