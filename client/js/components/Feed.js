@@ -12,11 +12,11 @@ var Feed = React.createClass({
   getInitialState: function() {
     var FEED_ITEMS = [
       { id:'0', title: "Bergman's Persona", description: 'A young nurse, Alma, is put in charge of Elisabeth Vogler.', votes: 1966 },
-      { id:'1', title: "Kurosawa's Rashomon", description: 'A heinous crime and its aftermath are recalled from differing points of view.', votes: 1950 },
-      { id:'2', title: "Ozu's Bashun", description: 'Setsuko Hara and Jun Usami ride bicycles to the beach... and the vase, of course.', votes: 1949 },
+      { id:'1', title: "Ozu's Bashun", description: 'Setsuko Hara and Jun Usami ride bicycles to the beach... and the vase, of course.', votes: 1949 },
+      { id:'2', title: "Kurosawa's Rashomon", description: 'A heinous crime and its aftermath are recalled from differing points of view.', votes: 1950 },
     ];
     return {
-      items: FEED_ITEMS,
+      items: this.sortByVotes(FEED_ITEMS),
       formDisplayed: false
     };
   },
@@ -37,6 +37,10 @@ var Feed = React.createClass({
     });
   },
 
+  sortByVotes: function(items) {
+    return _.sortBy(items, function(item) { return -item.votes; });
+  },
+
   onVote: function(item) {
     var items = _.uniq(this.state.items);
     var indexItemToUpdate = _.findIndex(items, function(feedItem) { return feedItem.id === item.id; });
@@ -45,7 +49,7 @@ var Feed = React.createClass({
     var newItems = _.pull(items, oldItem);
     newItems.push(item);
 
-    this.setState({ items: newItems });
+    this.setState({ items: this.sortByVotes(newItems) });
   },
 
   render: function() {
