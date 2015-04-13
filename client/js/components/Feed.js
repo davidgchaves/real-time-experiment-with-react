@@ -1,6 +1,7 @@
 /** @jsx React.DOM */
 
-var React = require('react');
+var React = require('react'),
+    _     = require('lodash');
 
 var ShowAddButton = require('./ShowAddButton'),
     FeedForm      = require('./FeedForm'),
@@ -36,6 +37,17 @@ var Feed = React.createClass({
     });
   },
 
+  onVote: function(item) {
+    var items = _.uniq(this.state.items);
+    var indexItemToUpdate = _.findIndex(items, function(feedItem) { return feedItem.id === item.id; });
+    var oldItem = items[indexItemToUpdate];
+
+    var newItems = _.pull(items, oldItem);
+    newItems.push(item);
+
+    this.setState({ items: newItems });
+  },
+
   render: function() {
     return (
       <div>
@@ -48,7 +60,7 @@ var Feed = React.createClass({
         <br />
         <br />
 
-        <FeedList items={this.state.items} />
+        <FeedList items={this.state.items} onVote={this.onVote} />
       </div>
     );
   }
