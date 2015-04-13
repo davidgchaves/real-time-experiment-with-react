@@ -8,12 +8,12 @@ var FeedForm = React.createClass({
     event.preventDefault();
 
     var newItem = {
-      title: this.refs.title.getDOMNode().value,
-      description: this.refs.description.getDOMNode().value,
+      title: React.findDOMNode(this.refs.title).value,
+      description: React.findDOMNode(this.refs.description).value,
       votes: 0
     };
 
-    this.refs.feedForm.getDOMNode().reset();
+    React.findDOMNode(this.refs.feedForm).reset();
     this.props.onNewItem(newItem);
   },
 
