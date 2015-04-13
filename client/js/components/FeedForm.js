@@ -4,8 +4,8 @@ var React = require('react');
 
 var FeedForm = React.createClass({
 
-  handleForm: function(e) {
-    e.preventDefault();
+  handleForm: function(event) {
+    event.preventDefault();
 
     var newItem = {
       title: this.refs.title.getDOMNode().value,
