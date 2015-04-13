@@ -10,9 +10,9 @@ var Feed = React.createClass({
 
   getInitialState: function() {
     var FEED_ITEMS = [
-      { id:'1', title: "Bergman's Persona", description: 'A young nurse, Alma, is put in charge of Elisabeth Vogler.', votes: 1966 },
-      { id:'2', title: "Kurosawa's Rashomon", description: 'A heinous crime and its aftermath are recalled from differing points of view.', votes: 1950 },
-      { id:'3', title: "Ozu's Bashun", description: 'Setsuko Hara and Jun Usami ride bicycles to the beach... and the vase, of course.', votes: 1949 },
+      { id:'0', title: "Bergman's Persona", description: 'A young nurse, Alma, is put in charge of Elisabeth Vogler.', votes: 1966 },
+      { id:'1', title: "Kurosawa's Rashomon", description: 'A heinous crime and its aftermath are recalled from differing points of view.', votes: 1950 },
+      { id:'2', title: "Ozu's Bashun", description: 'Setsuko Hara and Jun Usami ride bicycles to the beach... and the vase, of course.', votes: 1949 },
     ];
     return {
       items: FEED_ITEMS,
@@ -22,6 +22,10 @@ var Feed = React.createClass({
 
   onToggleForm: function() {
     this.setState({ formDisplayed: !this.state.formDisplayed });
+  },
+
+  generateMockIdForItem: function() {
+    return this.state.items.length;
   },
 
   onNewItem: function(newItem) {
@@ -39,7 +43,7 @@ var Feed = React.createClass({
           <ShowAddButton displayed={this.state.formDisplayed} onToggleForm={this.onToggleForm} />
         </div>
 
-        <FeedForm displayed={this.state.formDisplayed} onNewItem={this.onNewItem} />
+        <FeedForm displayed={this.state.formDisplayed} onNewItem={this.onNewItem} generateMockIdForItem={this.generateMockIdForItem} />
 
         <br />
         <br />

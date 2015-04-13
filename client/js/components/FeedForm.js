@@ -8,6 +8,7 @@ var FeedForm = React.createClass({
     event.preventDefault();
 
     var newItem = {
+      id: this.props.generateMockIdForItem(),
       title: React.findDOMNode(this.refs.title).value,
       description: React.findDOMNode(this.refs.description).value,
       votes: 0
