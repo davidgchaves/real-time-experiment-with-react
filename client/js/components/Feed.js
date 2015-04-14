@@ -15,13 +15,16 @@ var Feed = React.createClass({
 
     firebaseFeed.on('value', function(snapshot) {
       var items = [];
+      var sortedItems = [];
+
       snapshot.forEach(function(itemSnapshot) {
         var item = itemSnapshot.val();
         item.id = itemSnapshot.key();
         items.push(item);
       });
 
-      this.setState({ items: items });
+      sortedItems = this.sortByVotes(items);
+      this.setState({ items: sortedItems });
     }.bind(this));
   },
 
@@ -54,14 +57,8 @@ var Feed = React.createClass({
   },
 
   onVote: function(item) {
-    var items = _.uniq(this.state.items);
-    var indexItemToUpdate = _.findIndex(items, function(feedItem) { return feedItem.id === item.id; });
-    var oldItem = items[indexItemToUpdate];
-
-    var newItems = _.pull(items, oldItem);
-    newItems.push(item);
-
-    this.setState({ items: this.sortByVotes(newItems) });
+    var firebaseFeed = new Firebase('https://gsr-demo.firebaseio-demo.com/feed').child(item.id);
+    firebaseFeed.update(item);
   },
 
   render: function() {
