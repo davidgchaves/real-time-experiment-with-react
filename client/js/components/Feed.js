@@ -1,7 +1,8 @@
 /** @jsx React.DOM */
 
-var React = require('react'),
-    _     = require('lodash');
+var React    = require('react'),
+    _        = require('lodash'),
+    Firebase = require('firebase');
 
 var ShowAddButton = require('./ShowAddButton'),
     FeedForm      = require('./FeedForm'),
@@ -9,14 +10,28 @@ var ShowAddButton = require('./ShowAddButton'),
 
 var Feed = React.createClass({
 
+  loadFirebaseData: function() {
+    var firebaseFeed = new Firebase('https://gsr-demo.firebaseio-demo.com/feed');
+
+    firebaseFeed.on('value', function(snapshot) {
+      var items = [];
+      snapshot.forEach(function(itemSnapshot) {
+        var item = itemSnapshot.val();
+        item.id = itemSnapshot.key();
+        items.push(item);
+      });
+
+      this.setState({ items: items });
+    }.bind(this));
+  },
+
+  componentDidMount: function() {
+    this.loadFirebaseData();
+  },
+
   getInitialState: function() {
-    var FEED_ITEMS = [
-      { id:'0', title: "Bergman's Persona", description: 'A young nurse, Alma, is put in charge of Elisabeth Vogler.', votes: 1966 },
-      { id:'1', title: "Ozu's Bashun", description: 'Setsuko Hara and Jun Usami ride bicycles to the beach... and the vase, of course.', votes: 1949 },
-      { id:'2', title: "Kurosawa's Rashomon", description: 'A heinous crime and its aftermath are recalled from differing points of view.', votes: 1950 },
-    ];
     return {
-      items: this.sortByVotes(FEED_ITEMS),
+      items: [],
       formDisplayed: false
     };
   },
@@ -30,11 +45,8 @@ var Feed = React.createClass({
   },
 
   onNewItem: function(newItem) {
-    var newItems = this.state.items.concat([newItem]);
-    this.setState({
-      items: newItems,
-      formDisplayed: false
-    });
+    var firebaseFeed = new Firebase('https://gsr-demo.firebaseio-demo.com/feed');
+    firebaseFeed.push(newItem);
   },
 
   sortByVotes: function(items) {
